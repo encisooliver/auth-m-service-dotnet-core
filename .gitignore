@@ -1,0 +1,48 @@
+# Logs
+*.log
+*.tlg
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Package files
+*.nupkg
+*.snupkg
+
+# External dependencies
+packages/
+node_modules/
+
+# IDE settings
+.vscode/
+.idea/
+*.sln.iml
+
+# Tool-specific files
+*.dotCover
+*.dotTrace
+*.dotMemory
+*.dotPeek
+
+# MSBuild binary log
+*.binlog
+
+# Publish output
+publish/
+out/
+
+# Docker files
+docker-compose.override.yml
+.env
+.env.*
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Entity Framework Core migrations
+Migrations/
