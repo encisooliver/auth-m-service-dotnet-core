@@ -41,8 +41,8 @@ docker-compose.override.yml
 .env.*
 
 # SQL Server files
-*.mdf
-*.ldf
+# *.mdf
+# *.ldf
 
 # Entity Framework Core migrations
-Migrations/
+# Migrations/
