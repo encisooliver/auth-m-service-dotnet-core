@@ -2,6 +2,8 @@
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace auth_project.Data.Migrations
 {
     /// <inheritdoc />
@@ -32,8 +34,7 @@ namespace auth_project.Data.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
-                    TypeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UserTypeId = table.Column<int>(type: "INTEGER", nullable: true)
+                    UserTypeId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -42,8 +43,23 @@ namespace auth_project.Data.Migrations
                         name: "FK_Users_UserTypes_UserTypeId",
                         column: x => x.UserTypeId,
                         principalTable: "UserTypes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "UserTypes",
+                columns: new[] { "Id", "Type" },
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "User" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Email", "Name", "UserName", "UserTypeId" },
+                values: new object[] { 1, "admin@gmail.com", "Administrator", "admin", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserTypeId",

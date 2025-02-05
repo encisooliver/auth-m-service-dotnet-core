@@ -30,14 +30,11 @@ namespace auth_project.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("TypeId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("UserTypeId")
+                    b.Property<int>("UserTypeId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -45,6 +42,16 @@ namespace auth_project.Data.Migrations
                     b.HasIndex("UserTypeId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "admin@gmail.com",
+                            Name = "Administrator",
+                            UserName = "admin",
+                            UserTypeId = 1
+                        });
                 });
 
             modelBuilder.Entity("auth_project.Entities.UserType", b =>
@@ -59,13 +66,27 @@ namespace auth_project.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Type = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Type = "User"
+                        });
                 });
 
             modelBuilder.Entity("auth_project.Entities.User", b =>
                 {
                     b.HasOne("auth_project.Entities.UserType", "UserType")
                         .WithMany()
-                        .HasForeignKey("UserTypeId");
+                        .HasForeignKey("UserTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("UserType");
                 });
