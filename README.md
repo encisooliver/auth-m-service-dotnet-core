@@ -1,5 +1,6 @@
 # auth-m-service-dotnet-core
-
+ 
+### Environment Setup
 Download VS Code
 Install extension 
 C# Dev Kit
@@ -53,6 +54,7 @@ dotnet --list-sdks
 dotnet --info
 
 
+### Project Setup
 dotnet --version
 dotnet --info
 dotnet new list (show project templates)
@@ -60,26 +62,34 @@ dotnet new list (show project templates)
 Build project
 Go to solution explorer
 
-1. Right click > build
-> Assembly of compiled version of the application located
-/home/oliver/Documents/2025/dotnet/projects/auth-project/bin/Debug/net8.0/auth-project.dll
+1. Create new project
+dotnet new webapi -o project-name
+
+
 
 2. Command line 
 dotnet build
 
-3. Ctrl + Shift + B
+Or
+Right click > build
+> Assembly of compiled version of the application located
+/home/oliver/Documents/2025/dotnet/projects/auth-project/bin/Debug/net8.0/auth-project.dll
+
+Or
+Ctrl + Shift + B
 dotnet: build
 
-Run application
+3. Run application
 1. Right click to solution explorer and select debug or start without debugging
 2. dotnet run
 
-Manual testing Endpoints
-Add auth.http file to root directory
+4. Manual testing Endpoints
+Add/create new file auth.http to root directory
 Add line
 GET http://localhost:5118
 Sent Request
 
+### Environment configuration
 Prevent application to launch in browser
  Set launchBrowser false
  > Properties update launchSettings.json
@@ -96,18 +106,19 @@ Prevent application to launch in browser
       ...
     },
     
- 
- Add DTOs folder in you project
+
+### Add DTOs folder in you project
  1. Go to solution explorer
  2. Right click and add new folder
  
- Parameter Validation
+Parameter Validation
  Nuget Package
  MinimalApis.Extensions
+ 
  dotnet add package MinimalApis.Extensions --version 0.11.0
  dotnet remove package MinimalApis.Extensions
  
- Entity Framework Core
+Entity Framework Core
  A lightweight, extensible, open source and cross-platform object-relational mapper for .NET
  Benefits
  - no need to learn new language
@@ -115,19 +126,62 @@ Prevent application to launch in browser
  - change tracking
  - multiple database providers
  
- SQLite
+Add SQLite
  dotnet add package Microsoft.EntityFrameworkCore.Sqlite
- 
-dotnet-ef - manage Migrations and to scaffold a DbContext and entity types by reverse engineering the schema of a database
+
+Add new folder Data and add AuthContext
+  > Data
+      AuthContext.cs
+  
+Add db context to Programs.cs
+  var connectionString = builder.Configuration.GetConnectionString("AuthStore");
+  builder.Services.AddSqlite<AuthContext>(connectionString);  
+
+  IConfiguration
+    appsettings.json - Never store credentials in this file
+    Command Line Args
+    Environment Variables
+    User Secrets - Use this if connections strings includes secrets
+    Cloud Source
+
+### Setup ORM
+1. dotnet-ef - manage Migrations and to scaffold a DbContext and entity types by reverse engineering the schema of a database 
  dotnet tool install --global dotnet-ef --version 9.0.1
  
- Microsoft.EntityFrameworkCore.Design 
- manage Migrations and to scaffold a DbContext and entity types by reverse engineering the schema of a database.
+2. Microsoft.EntityFrameworkCore.Design 
+   manage Migrations and to scaffold a DbContext and entity types by reverse engineering the schema of a database.
+  
+   dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.1
  
- dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.1
- 
- Create migration 
- dotnet ef migrations add IntitialCreate --output-dir Data/Migrations
+3. Create migration based on defined Entities
+    dotnet ef migrations add IntitialCreate --output-dir Data/Migrations
+
+4. Execute migration 
+    dotnet ef database update
+
+5. Implement auto run migration
+    DataExtensios.cs
+
+6. Add seeder in AuthContext.cs
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        // base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<UserType>().HasData(
+            new { Id = 1, Type = "Admin"},
+            new { Id = 2, Type = "User"}
+        );
+    }
+
+    Run migration
+      dotnet ef migrations add SeedUserTypes --output-dir Data/Migration
+    Revert migration
+      dotnet ef migrations remove
+  
+  Update table column remove foreignkey column
+    
+    sqlite3 yourdatabase.db "DELETE FROM __EFMigrationsHistory WHERE MigrationId = '20250201025908_SeederUser';"
+    sqlite3 yourdatabase.db"DELETE FROM __EFMigrationsHistory WHERE MigrationId = '20250201025908_SeederUser';"
  
 Install SQLite 3 on Ubuntu 22.04 
 sudo apt update
@@ -136,6 +190,13 @@ sudo apt install sqlite3
 sqlite3 --version
 sqlite3
 
+
+### Dependency Injection
+It refers to an external library, module, or component that a project relies on to function properly. 
+
+Abstraction
+Interface
+Singleton Service Lifetime
 
 
 
