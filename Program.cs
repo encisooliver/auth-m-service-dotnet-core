@@ -9,5 +9,6 @@ builder.Services.AddSqlite<AuthContext>(connectionString);
 var app = builder.Build();
 
 app.MapUserEndpoints();
+app.MigrateDb(); // from DataExtensions.cs
 
 app.Run();
