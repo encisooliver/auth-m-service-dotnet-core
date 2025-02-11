@@ -199,6 +199,17 @@ Interface
 Singleton Service Lifetime
 
 
+### Add swagger
+Run:
+dotnet add package Swashbuckle.AspNetCore
+
+Update Program.cs
+builder.Services.AddSwaggerGen();
+...
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 
 
 
