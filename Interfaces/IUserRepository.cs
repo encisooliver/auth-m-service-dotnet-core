@@ -5,9 +5,9 @@ namespace auth_project.Interfaces;
 
 public interface IUserRepository
 {
-    public IEnumerable<User> GetAll();
-    public User GetById(int id);
-    public Boolean Add(User user);
-    public Boolean Update(User user);
-    public Boolean Delete(User user);
+    Task<IEnumerable<User>> GetAllAsync();
+    Task<User?> GetByIdAsync(int id);
+    Task<bool> AddAsync(User user);
+    Task<bool> UpdateAsync(User user);
+    Task<bool> DeleteAsync(User user);
 }
