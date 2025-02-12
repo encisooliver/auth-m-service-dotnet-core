@@ -1,0 +1,153 @@
+using System;
+
+namespace auth_project.TestControllers;
+using Xunit;
+using Moq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using auth_project.Interfaces;
+using auth_project.Controllers;
+using auth_project.Entities;
+
+public class UserControllerTests
+{
+    private readonly Mock<IUserRepository> _mockRepo;
+    private readonly UserController _controller;
+
+    public UserControllerTests()
+    {
+        _mockRepo = new Mock<IUserRepository>();
+        _controller = new UserController(_mockRepo.Object);
+    }
+
+    // Test: GetAllUsers - Should return 200 OK with users
+    [Fact]
+    public async Task GetAllUsers_ReturnsOk_WithUsers()
+    {
+        // Arrange
+        var users = new List<User> { new User { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 } };
+        _mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
+
+        // Act
+        var result = await _controller.GetAllUsers();
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnUsers = Assert.IsType<List<User>>(okResult.Value);
+        Assert.Single(returnUsers);
+    }
+
+    // Test: GetAllUsers - Should return 404 Not Found when no users exist
+    [Fact]
+    public async Task GetAllUsers_ReturnsNotFound_WhenNoUsers()
+    {
+        _mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(new List<User>());
+
+        var result = await _controller.GetAllUsers();
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    // Test: GetUserById - Should return 200 OK with user
+    [Fact]
+    public async Task GetUserById_ReturnsOk_WithUser()
+    {
+        var user = new User { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(user);
+
+        var result = await _controller.GetUserById(1);
+
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnUser = Assert.IsType<User>(okResult.Value);
+        Assert.Equal(user.Id, returnUser.Id);
+    }
+
+    // Test: GetUserById - Should return 404 Not Found when user doesn't exist
+    [Fact]
+    public async Task GetUserById_ReturnsNotFound_WhenUserNotFound()
+    {
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((User)null);
+
+        var result = await _controller.GetUserById(1);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    // Test: AddUser - Should return 201 Created when user is successfully added
+    [Fact]
+    public async Task AddUser_ReturnsCreated_WhenUserIsAdded()
+    {
+        var user = new User { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync(true);
+
+        var result = await _controller.AddUser(user);
+
+        var createdResult = Assert.IsType<CreatedAtActionResult>(result);
+        var returnUser = Assert.IsType<User>(createdResult.Value);
+        Assert.Equal(user.Id, returnUser.Id);
+    }
+
+    // Test: AddUser - Should return 400 Bad Request when adding fails
+    [Fact]
+    public async Task AddUser_ReturnsBadRequest_WhenAddFails()
+    {
+        var user = new User { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync(false);
+
+        var result = await _controller.AddUser(user);
+
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    // Test: UpdateUser - Should return 200 OK when update is successful
+    [Fact]
+    public async Task UpdateUser_ReturnsOk_WhenUpdateSuccessful()
+    {
+        var user = new User { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(user);
+        _mockRepo.Setup(repo => repo.UpdateAsync(user)).ReturnsAsync(true);
+
+        var result = await _controller.UpdateUser(1, user);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    // Test: UpdateUser - Should return 404 Not Found when user doesn't exist
+    [Fact]
+    public async Task UpdateUser_ReturnsNotFound_WhenUserNotFound()
+    {
+        var user = new User { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((User)null);
+
+        var result = await _controller.UpdateUser(1, user);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+
+    // Test: DeleteUser - Should return 200 OK when delete is successful
+    [Fact]
+    public async Task DeleteUser_ReturnsOk_WhenDeleteSuccessful()
+    {
+        var user = new User { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(user);
+        _mockRepo.Setup(repo => repo.DeleteAsync(user)).ReturnsAsync(true);
+
+        var result = await _controller.DeleteUser(1);
+
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    // Test: DeleteUser - Should return 404 Not Found when user doesn't exist
+    [Fact]
+    public async Task DeleteUser_ReturnsNotFound_WhenUserNotFound()
+    {
+        _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((User)null);
+
+        var result = await _controller.DeleteUser(1);
+
+        Assert.IsType<NotFoundObjectResult>(result);
+    }
+}
+

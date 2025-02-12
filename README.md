@@ -211,6 +211,11 @@ app.UseSwaggerUI();
 
 
 
+Xunit Test Dependencies
+dotnet add package xunit
+dotnet add package moq
+dotnet add package Microsoft.AspNetCore.Mvc.Core
+dotnet add package Microsoft.AspNetCore.Mvc.Abstractions
 
 
 
