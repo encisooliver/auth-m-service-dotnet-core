@@ -1,6 +1,6 @@
 using System;
 using auth_project.Data;
-using auth_project.Entities;
+using auth_project.Models;
 using auth_project.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,28 +14,28 @@ public class UserRepository: IUserRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<User>> GetAllAsync(){
+    public async Task<IEnumerable<UserModel>> GetAllAsync(){
         return await _context.Users.ToListAsync();
     }
 
-    public async Task<User?> GetByIdAsync(int id)
+    public async Task<UserModel?> GetByIdAsync(int id)
     {
         return await _context.Users.FindAsync(id);
     }
 
-    public async Task<bool> AddAsync(User user)
+    public async Task<bool> AddAsync(UserModel user)
     {
         await _context.Users.AddAsync(user);
         return await SaveAsync();
     }
 
-    public async Task<bool> UpdateAsync(User user)
+    public async Task<bool> UpdateAsync(UserModel user)
     {
         _context.Users.Update(user);
         return await SaveAsync();
     }
 
-    public async Task<bool> DeleteAsync(User user)
+    public async Task<bool> DeleteAsync(UserModel user)
     {
         _context.Users.Remove(user);
         return await SaveAsync();

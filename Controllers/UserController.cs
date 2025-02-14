@@ -1,4 +1,4 @@
-using auth_project.Entities;
+using auth_project.Models;
 using auth_project.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +18,7 @@ namespace auth_project.Controllers
 
         // Get all users
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<User>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<UserModel>))]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userRepository.GetAllAsync();
@@ -33,7 +33,7 @@ namespace auth_project.Controllers
 
         // Get user by ID
         [HttpGet("{id:int}")]
-        [ProducesResponseType(200, Type = typeof(User))]
+        [ProducesResponseType(200, Type = typeof(UserModel))]
         [ProducesResponseType(404)]
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -49,9 +49,9 @@ namespace auth_project.Controllers
 
         // Add a new user
         [HttpPost]
-        [ProducesResponseType(201, Type = typeof(User))]
+        [ProducesResponseType(201, Type = typeof(UserModel))]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> AddUser([FromBody] User user)
+        public async Task<IActionResult> AddUser([FromBody] UserModel user)
         {
             if (user == null)
             {
@@ -73,7 +73,7 @@ namespace auth_project.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserModel user)
         {
             if (user == null || id != user.Id)
             {
