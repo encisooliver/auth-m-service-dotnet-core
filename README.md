@@ -167,7 +167,7 @@ Add db context to Programs.cs
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<UserType>().HasData(
+        modelBuilder.Entity<UserTypeModel>().HasData(
             new { Id = 1, Type = "Admin"},
             new { Id = 2, Type = "User"}
         );
@@ -216,6 +216,8 @@ dotnet add package xunit
 dotnet add package moq
 dotnet add package Microsoft.AspNetCore.Mvc.Core
 dotnet add package Microsoft.AspNetCore.Mvc.Abstractions
+dotnet add package BCrypt.Net-Next // password hashing
+
 
 
 
