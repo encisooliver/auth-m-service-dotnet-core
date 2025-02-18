@@ -3,13 +3,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using auth_project.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
-using auth_project.Interfaces;
 
 namespace auth_project.Services;
 
-public class AuthService: IAuthService
+public class AuthService
 {
     private readonly IConfiguration _configuration;
 
