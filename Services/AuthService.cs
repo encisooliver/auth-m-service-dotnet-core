@@ -3,23 +3,25 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using auth_project.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.IdentityModel.Tokens;
+using auth_project.Interfaces;
 
 namespace auth_project.Services;
 
-public class AuthenticationService
+public class AuthService: IAuthService
 {
-     private readonly IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
 
-    public AuthenticationService(IConfiguration configuration)
+    public AuthService(IConfiguration configuration)
     {
         _configuration = configuration;
     }
 
-       public String GenerateJwtToken(UserModel user)
+    public string GenerateJwtToken(UserModel user)
         {
-            var jwtSettings = _configuration.GetSection("JwtSettings");
-            var secretKey = jwtSettings.GetValue<String>("SecretKey");
+            var jwtSettings = _configuration.GetSection("JwtConfig");
+            var secretKey = jwtSettings.GetValue<String>("Key");
             var issuer = jwtSettings.GetValue<String>("Issuer");
             var audience = jwtSettings.GetValue<String>("Audience");
 
@@ -44,5 +46,4 @@ public class AuthenticationService
 
             return tokenString;
         }
-    
 }
