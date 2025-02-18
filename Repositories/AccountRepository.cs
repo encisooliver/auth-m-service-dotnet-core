@@ -15,11 +15,12 @@ public class AccountRepository: IAccountInterface
         _authContext = authContext;
     }   
 
-    public Boolean Register(RegistrationDTO register, String hashPassword)
+    public bool Register(RegistrationDTO register, string hashPassword)
     {
-        UserModel user = new UserModel{
+        var user = new UserModel{
             Name = register.Name,
             UserName = register.UserName,
+            Email = register.Email,
             Password = hashPassword
         };
         _authContext.Users.Add(user);

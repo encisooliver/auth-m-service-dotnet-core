@@ -27,7 +27,7 @@ public class UserControllerTests
     public async Task GetAllUsers_ReturnsOk_WithUsers()
     {
         // Arrange
-        var users = new List<UserModel> { new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 } };
+        var users = new List<UserModel> { new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  } };
         _mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(users);
 
         // Act
@@ -54,7 +54,7 @@ public class UserControllerTests
     [Fact]
     public async Task GetUserById_ReturnsOk_WithUser()
     {
-        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
         _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(user);
 
         var result = await _controller.GetUserById(1);
@@ -79,7 +79,7 @@ public class UserControllerTests
     [Fact]
     public async Task AddUser_ReturnsCreated_WhenUserIsAdded()
     {
-        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
         _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync(true);
 
         var result = await _controller.AddUser(user);
@@ -93,7 +93,7 @@ public class UserControllerTests
     [Fact]
     public async Task AddUser_ReturnsBadRequest_WhenAddFails()
     {
-        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
         _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync(false);
 
         var result = await _controller.AddUser(user);
@@ -105,7 +105,7 @@ public class UserControllerTests
     [Fact]
     public async Task UpdateUser_ReturnsOk_WhenUpdateSuccessful()
     {
-        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
         _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(user);
         _mockRepo.Setup(repo => repo.UpdateAsync(user)).ReturnsAsync(true);
 
@@ -118,7 +118,7 @@ public class UserControllerTests
     [Fact]
     public async Task UpdateUser_ReturnsNotFound_WhenUserNotFound()
     {
-        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
         _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync((UserModel)null);
 
         var result = await _controller.UpdateUser(1, user);
@@ -130,7 +130,7 @@ public class UserControllerTests
     [Fact]
     public async Task DeleteUser_ReturnsOk_WhenDeleteSuccessful()
     {
-        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com", UserTypeId = 1 };
+        var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
         _mockRepo.Setup(repo => repo.GetByIdAsync(1)).ReturnsAsync(user);
         _mockRepo.Setup(repo => repo.DeleteAsync(user)).ReturnsAsync(true);
 

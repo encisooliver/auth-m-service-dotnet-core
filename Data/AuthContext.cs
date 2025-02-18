@@ -13,7 +13,7 @@ public class AuthContext(DbContextOptions<AuthContext> options)
     {
         // base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<UserModel>().HasData(
-            new { Id = 1, Name = "Administrator", UserName="admin", Email="admin@gmail.com"}
+            new { Id = 1, Name = "Administrator", UserName="admin", Email="admin@gmail.com", Password="123456" }
         );
     }
 }

@@ -7,15 +7,10 @@ namespace auth_project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController(IAccountInterface acountInterface, IConfiguration configuration) : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        private readonly IAccountInterface _accountInterface;
-
-        public AccountController(IAccountInterface acountInterface, IConfiguration configuration){
-            _accountInterface = acountInterface;
-            _configuration = configuration;
-        }
+        private readonly IConfiguration _configuration = configuration;      
+        private readonly IAccountInterface _accountInterface = acountInterface;   
 
         [HttpPost("login")]
         [ProducesResponseType(200)]
@@ -26,8 +21,8 @@ namespace auth_project.Controllers
             var user = _accountInterface.GetAccount(login.UserName);
             if (user != null && BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
             {
-                AuthenticationService _authenticationService = new AuthenticationService(_configuration);
-                var token = _authenticationService.GenerateJwtToken(user);
+                var authService = new AuthService(_configuration);
+                var token = authService.GenerateJwtToken(user);
                 return Ok(new { Token = token });
             }
             else
@@ -58,7 +53,7 @@ namespace auth_project.Controllers
             var user = _accountInterface.GetAccount(register.UserName);
             if(user != null && BCrypt.Net.BCrypt.Verify(register.Password, user.Password)) 
             {
-                AuthenticationService authenticationService = new AuthenticationService(_configuration);
+                var authenticationService = new AuthService(_configuration);
                 var token = authenticationService.GenerateJwtToken(user);
                 return Ok(new { Token = token});
             }
