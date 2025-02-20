@@ -4,6 +4,6 @@ namespace auth_project.DTOs.Account;
 
 public class LoginDTO
 {
-    public String UserName {get; set;}
-    public String Password {get; set;}
+    public string UserName {get; set;}
+    public string Password {get; set;}
 }

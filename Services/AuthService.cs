@@ -19,9 +19,9 @@ public class AuthService
     public string GenerateJwtToken(UserModel user)
         {
             var jwtSettings = _configuration.GetSection("JwtConfig");
-            var secretKey = jwtSettings.GetValue<String>("Key");
-            var issuer = jwtSettings.GetValue<String>("Issuer");
-            var audience = jwtSettings.GetValue<String>("Audience");
+            var secretKey = jwtSettings.GetValue<string>("Key");
+            var issuer = jwtSettings.GetValue<string>("Issuer");
+            var audience = jwtSettings.GetValue<string>("Audience");
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(secretKey);

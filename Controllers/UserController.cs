@@ -1,5 +1,6 @@
 using auth_project.Models;
 using auth_project.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace auth_project.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -14,7 +16,6 @@ namespace auth_project.Controllers
         public UserController(IUserRepository userRepository){
             _userRepository = userRepository;
         }
-
 
         // Get all users
         [HttpGet]
