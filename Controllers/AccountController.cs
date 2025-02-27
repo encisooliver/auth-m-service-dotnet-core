@@ -16,9 +16,9 @@ namespace auth_project.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(401)]
-        public IActionResult Login([FromBody] LoginDTO login)
+        public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
-            var user = _accountInterface.GetAccount(login.UserName);
+            var user = await _accountInterface.GetAccount(login.UserName);
             if (user != null && BCrypt.Net.BCrypt.Verify(login.Password, user.Password))
             {
                 var authService = new AuthService(_configuration);
@@ -35,7 +35,7 @@ namespace auth_project.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(204)]
         [ProducesResponseType(500)]
-        public IActionResult Register([FromBody] RegistrationDTO register)
+        public async Task<IActionResult> Register([FromBody] RegistrationDTO register)
         {
             if (register == null)
             {
@@ -44,13 +44,13 @@ namespace auth_project.Controllers
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(register.Password);
 
-            if(_accountInterface.Register(register, hashedPassword) == false){
+            if(await _accountInterface.Register(register, hashedPassword) == false){
 
                 ModelState.AddModelError("","Something went wrong while saving");
                 return StatusCode(500,ModelState);
             }
 
-            var user = _accountInterface.GetAccount(register.UserName);
+            var user = await _accountInterface.GetAccount(register.UserName);
             if(user != null && BCrypt.Net.BCrypt.Verify(register.Password, user.Password)) 
             {
                 var authenticationService = new AuthService(_configuration);
