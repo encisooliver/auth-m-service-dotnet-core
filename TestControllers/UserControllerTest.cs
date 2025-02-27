@@ -80,7 +80,7 @@ public class UserControllerTests
     public async Task AddUser_ReturnsCreated_WhenUserIsAdded()
     {
         var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
-        _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync(true);
+        _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync((UserModel)null);
 
         var result = await _controller.AddUser(user);
 
@@ -94,7 +94,7 @@ public class UserControllerTests
     public async Task AddUser_ReturnsBadRequest_WhenAddFails()
     {
         var user = new UserModel { Id = 1, Name = "John Doe", UserName = "johndoe", Email = "john@example.com"  };
-        _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync(false);
+        _mockRepo.Setup(repo => repo.AddAsync(user)).ReturnsAsync((UserModel)null);
 
         var result = await _controller.AddUser(user);
 
