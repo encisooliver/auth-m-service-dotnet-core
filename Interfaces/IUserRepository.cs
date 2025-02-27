@@ -7,7 +7,7 @@ public interface IUserRepository
 {
     Task<IEnumerable<UserModel>> GetAllAsync();
     Task<UserModel?> GetByIdAsync(int id);
-    Task<bool> AddAsync(UserModel user);
+    Task<UserModel> AddAsync(UserModel user);
     Task<bool> UpdateAsync(UserModel user);
     Task<bool> DeleteAsync(UserModel user);
 }
