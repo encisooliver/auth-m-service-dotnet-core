@@ -1,4 +1,14 @@
 # auth-m-service-dotnet-core
+
+## Summary
+1. Environment Setup
+2. Select design pattern to use
+3. Setup ORM - Entity Framework
+4. Setup DbContext
+5. Setup JWT authentication and authorization
+6. Setup global exception handler
+7. Add swagger
+8. Add unit test
  
 ### Environment Setup
 Download VS Code
@@ -64,8 +74,6 @@ Go to solution explorer
 
 1. Create new project
 dotnet new webapi -o project-name
-
-
 
 2. Command line 
 dotnet build
@@ -209,7 +217,8 @@ builder.Services.AddSwaggerGen();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-
+### Global exception handler
+Source: https://www.milanjovanovic.tech/blog/global-error-handling-in-aspnetcore-8
 
 Xunit Test Dependencies
 dotnet add package xunit

@@ -6,6 +6,6 @@ namespace auth_project.Interfaces;
 
 public interface IAccountInterface
 {
-    public Boolean Register(RegistrationDTO register, String hashPassword);
-    public UserModel? GetAccount(String userName);
+    Task<bool> Register(RegistrationDTO register, string hashPassword);
+    Task<UserModel>? GetAccount(string userName);
 }

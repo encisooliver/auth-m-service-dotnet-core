@@ -23,22 +23,26 @@ public class UserRepository: IUserRepository
         return await _context.Users.FindAsync(id);
     }
 
-    public async Task<bool> AddAsync(UserModel user)
+    public async Task<UserModel> AddAsync(UserModel user)
     {
-        await _context.Users.AddAsync(user);
-        return await SaveAsync();
+        var _user = await _context.Users.AddAsync(user);
+        user.Id = _user.Entity.Id;
+        _context.SaveChangesAsync();
+        return await Task.FromResult(user);
     }
 
     public async Task<bool> UpdateAsync(UserModel user)
     {
         _context.Users.Update(user);
-        return await SaveAsync();
+        _context.SaveChangesAsync();
+        return await Task.FromResult(true);
     }
 
     public async Task<bool> DeleteAsync(UserModel user)
     {
         _context.Users.Remove(user);
-        return await SaveAsync();
+        _context.SaveChangesAsync();
+        return await Task.FromResult(true);
     }
 
     public async Task<bool> SaveAsync()

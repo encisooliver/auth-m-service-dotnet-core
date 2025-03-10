@@ -61,7 +61,7 @@ namespace auth_project.Controllers
 
             var created = await _userRepository.AddAsync(user);
 
-            if (!created)
+            if (created != null)
             {
                 return BadRequest("Failed to create user.");
             }

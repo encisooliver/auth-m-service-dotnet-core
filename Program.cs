@@ -6,6 +6,7 @@ using auth_project.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using auth_project.Middleware;
 using auth_project.Services;
 using Microsoft.OpenApi.Models;
 
@@ -85,11 +86,11 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // Sets Swagger UI as the homepage
     });
 }
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// app.MigrateDb(); // from DataExtensions.cs
+app.MigrateDb(); // from DataExtensions.cs
 
 app.Run();

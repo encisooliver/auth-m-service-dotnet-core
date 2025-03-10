@@ -15,25 +15,20 @@ public class AccountRepository: IAccountInterface
         _authContext = authContext;
     }   
 
-    public bool Register(RegistrationDTO register, string hashPassword)
+    public async Task<bool> Register(RegistrationDTO register, string hashPassword)
     {
-        var user = new UserModel{
+        await _authContext.Users.AddAsync(new UserModel{
             Name = register.Name,
             UserName = register.UserName,
             Email = register.Email,
             Password = hashPassword
-        };
-        _authContext.Users.Add(user);
-        return Save();
+        });
+        await _authContext.SaveChangesAsync();
+        return await Task.FromResult(true);
     }
 
-    public UserModel? GetAccount(String userName)
+    public async Task<UserModel> GetAccount(string userName)
     {
-        return _authContext.Users.Where(d => d.UserName == userName).FirstOrDefault();
-    }
-
-    private Boolean Save()
-    {
-        return _authContext.SaveChanges() > 0 ? true :false;
+        return await Task.FromResult(_authContext.Users.FirstOrDefault(d => d.UserName == userName));
     }
 }
