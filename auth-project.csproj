@@ -32,4 +32,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
     <PackageReference Include="xunit" Version="2.9.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="_Repositories\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="_Repositories\obj\project.packagespec.json" />
+    <_ContentIncludedByDefault Remove="_Repositories\obj\_Repositories.csproj.nuget.dgspec.json" />
+  </ItemGroup>
 </Project>
