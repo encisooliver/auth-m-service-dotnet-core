@@ -10,6 +10,6 @@ public static class DataExtensions
         using var scope = app.Services.CreateScope(); 
         var dbContext = scope.ServiceProvider.GetRequiredService<AuthContext>();
         dbContext.Database.Migrate();
-        // apdate Program.cs to add it 
+        // update Program.cs to add it 
     }
 }

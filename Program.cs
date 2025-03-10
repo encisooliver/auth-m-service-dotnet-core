@@ -90,6 +90,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// app.MigrateDb(); // from DataExtensions.cs
+app.MigrateDb(); // from DataExtensions.cs
 
 app.Run();
