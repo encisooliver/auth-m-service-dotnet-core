@@ -1,13 +1,10 @@
 using auth_project.Data;
-using Microsoft.EntityFrameworkCore;
-using auth_project.Endpoints;
 using auth_project.Interfaces;
 using auth_project.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using auth_project.Middleware;
-using auth_project.Services;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -73,6 +70,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
@@ -86,7 +85,8 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // Sets Swagger UI as the homepage
     });
 }
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
